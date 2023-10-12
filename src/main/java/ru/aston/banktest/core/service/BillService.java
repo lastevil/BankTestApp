@@ -14,6 +14,7 @@ import ru.aston.banktest.exceptions.LowBalanceException;
 import ru.aston.banktest.exceptions.ValidationException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 
 public class BillService implements BillCreateUseCase, BillCashOperationsUseCase, BillVirtualOperationsUseCase {
@@ -68,7 +69,7 @@ public class BillService implements BillCreateUseCase, BillCashOperationsUseCase
 
     @Transactional
     @Override
-    public void transfer(String fromBill, String toBill, BigDecimal sum, String pinCode) {
+    public BillOutputDto transfer(String fromBill, String toBill, BigDecimal sum, String pinCode) {
         Bill from = billOutputManager.getBill(fromBill);
         Bill to = billOutputManager.getBill(toBill);
         if (!from.validatePin(pinCode)) {
@@ -83,5 +84,6 @@ public class BillService implements BillCreateUseCase, BillCashOperationsUseCase
         result = to.getBalance().add(sum);
         to.setBalance(result);
         saveOperationUseCase.saveTransferHistory(Actions.TRNSFER, from, to, sum);
+        return BillOutputDto.create(from);
     }
 }

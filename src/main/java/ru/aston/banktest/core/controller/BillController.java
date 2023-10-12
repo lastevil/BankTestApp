@@ -15,6 +15,7 @@ import ru.aston.banktest.dto.output.BillOutputDto;
 import ru.aston.banktest.dto.output.HistoryOutputDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -49,11 +50,11 @@ public class BillController {
 
     @PostMapping("/transfer")
     @Operation(summary = "Перевод средств на с счета на счет", description = "Перевод средств на с счета на счет")
-    public void transfer(@RequestBody BillTransferOperationInputDto transferDto) {
+    public BillOutputDto transfer(@RequestBody BillTransferOperationInputDto transferDto) {
         AppValidator.validateBill(transferDto.fromBill(), transferDto.toBill());
         AppValidator.validateMoney(transferDto.sum());
         AppValidator.validatePin(transferDto.pinCode());
-        billVirtualOperationsUseCase.transfer(transferDto.fromBill(), transferDto.toBill(), transferDto.sum(), transferDto.pinCode());
+        return billVirtualOperationsUseCase.transfer(transferDto.fromBill(), transferDto.toBill(), transferDto.sum(), transferDto.pinCode());
     }
 
     @GetMapping("/history")
