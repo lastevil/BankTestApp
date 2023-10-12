@@ -9,4 +9,6 @@ public interface AccountOutputManager {
     Account getAccount(String username);
 
     Page<Account> getAllAccount(int page, int elementsCount);
+
+    void removeAll();
 }

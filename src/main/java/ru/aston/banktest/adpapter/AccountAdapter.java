@@ -34,4 +34,9 @@ public class AccountAdapter implements AccountOutputManager {
     public Page<Account> getAllAccount(int page, int elementsCount) {
         return repository.findAll(PageRequest.of(page - 1, elementsCount, Sort.by(Sort.Direction.ASC, "username")));
     }
+
+    @Override
+    public void removeAll() {
+        repository.deleteAll();
+    }
 }

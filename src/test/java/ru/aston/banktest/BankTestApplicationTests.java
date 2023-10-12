@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.aston.banktest.adpapter.AccountAdapter;
 import ru.aston.banktest.adpapter.BillAdapter;
 import ru.aston.banktest.adpapter.HistoryAdapter;
+import ru.aston.banktest.core.entity.Account;
 import ru.aston.banktest.core.service.AccountService;
 import ru.aston.banktest.core.service.BillService;
 import ru.aston.banktest.core.service.HistoryService;
@@ -15,17 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class BankTestApplicationTests {
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
     @Autowired
-    AccountAdapter accountAdapter;
+    private AccountAdapter accountAdapter;
     @Autowired
-    BillService billService;
+    private BillService billService;
     @Autowired
-    BillAdapter billAdapter;
+    private BillAdapter billAdapter;
     @Autowired
-    HistoryService historyService;
+    private HistoryService historyService;
     @Autowired
-    HistoryAdapter historyAdapter;
+    private HistoryAdapter historyAdapter;
 
 
     @Test
@@ -36,6 +37,12 @@ class BankTestApplicationTests {
         assertNotNull(billService);
         assertNotNull(historyAdapter);
         assertNotNull(historyService);
+    }
+
+    @Test
+    void DBTest() {
+        Account account = accountAdapter.getAccount("test");
+        assertNotNull(account);
     }
 
 }

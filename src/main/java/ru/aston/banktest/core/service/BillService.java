@@ -9,6 +9,7 @@ import ru.aston.banktest.contract.history.input.SaveOperationUseCase;
 import ru.aston.banktest.core.entity.Account;
 import ru.aston.banktest.core.entity.Actions;
 import ru.aston.banktest.core.entity.Bill;
+import ru.aston.banktest.dto.output.BillOutputDto;
 import ru.aston.banktest.exceptions.LowBalanceException;
 import ru.aston.banktest.exceptions.ValidationException;
 
@@ -40,29 +41,29 @@ public class BillService implements BillCreateUseCase, BillCashOperationsUseCase
 
     @Override
     @Transactional
-    public void deposite(String billNumber, BigDecimal sum) {
+    public BillOutputDto deposite(String billNumber, BigDecimal sum) {
         Bill currentBill = billOutputManager.getBill(billNumber);
         BigDecimal result = currentBill.getBalance().add(sum);
         currentBill.setBalance(result);
-        billOutputManager.update(currentBill);
         saveOperationUseCase.saveDipositeHistory(Actions.DEPOSITE, currentBill, sum);
+        return BillOutputDto.create(currentBill);
     }
 
     @Override
     @Transactional
-    public void withdraw(String billNumber, BigDecimal sum, String pinCode) {
+    public BillOutputDto withdraw(String billNumber, BigDecimal sum, String pinCode) {
         Bill currentBill = billOutputManager.getBill(billNumber);
         if (!currentBill.validatePin(pinCode)) {
-            throw new ValidationException("pin is not correct to this bill");
+            throw new ValidationException("Pin is not correct to this bill");
         }
         BigDecimal currentBalance = currentBill.getBalance();
-        if (currentBalance.compareTo(sum)<0){
-            throw new LowBalanceException("not enough money");
+        if (currentBalance.compareTo(sum) < 0) {
+            throw new LowBalanceException("Not enough money");
         }
         BigDecimal result = currentBalance.subtract(sum);
         currentBill.setBalance(result);
-        billOutputManager.update(currentBill);
         saveOperationUseCase.saveWithdrawHistory(Actions.WITHDRAW, currentBill, sum);
+        return BillOutputDto.create(currentBill);
     }
 
     @Transactional
@@ -74,15 +75,13 @@ public class BillService implements BillCreateUseCase, BillCashOperationsUseCase
             throw new ValidationException("pin is not correct to this bill");
         }
         BigDecimal fromBalanceBalance = from.getBalance();
-        if (fromBalanceBalance.compareTo(sum)<0){
+        if (fromBalanceBalance.compareTo(sum) < 0) {
             throw new LowBalanceException("not enough money");
         }
         BigDecimal result = fromBalanceBalance.subtract(sum);
         from.setBalance(result);
-        billOutputManager.update(from);
         result = to.getBalance().add(sum);
         to.setBalance(result);
-        billOutputManager.update(to);
-        saveOperationUseCase.saveTransferHistory(Actions.TRNSFER, from,to, sum);
+        saveOperationUseCase.saveTransferHistory(Actions.TRNSFER, from, to, sum);
     }
 }

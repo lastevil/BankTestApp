@@ -11,6 +11,7 @@ import ru.aston.banktest.dto.input.bill.BillDepositeOperationInputDto;
 import ru.aston.banktest.dto.input.bill.BillTransferOperationInputDto;
 import ru.aston.banktest.dto.input.bill.BillWithdrawOperationInputDto;
 import ru.aston.banktest.dto.input.validation.AppValidator;
+import ru.aston.banktest.dto.output.BillOutputDto;
 import ru.aston.banktest.dto.output.HistoryOutputDto;
 
 import java.time.LocalDateTime;
@@ -33,17 +34,17 @@ public class BillController {
 
     @PostMapping("/deposite")
     @Operation(summary = "Пополнение счета", description = "Пополнение счета")
-    public void deposite(@RequestBody BillDepositeOperationInputDto depositeDto) {
+    public BillOutputDto deposite(@RequestBody BillDepositeOperationInputDto depositeDto) {
         AppValidator.validateMoney(depositeDto.sum());
-        billCashOperationsUseCase.deposite(depositeDto.billNumber(), depositeDto.sum());
+        return billCashOperationsUseCase.deposite(depositeDto.billNumber(), depositeDto.sum());
     }
 
     @PostMapping("withdraw")
     @Operation(summary = "Снятие средств с счета", description = "Снятие средств с счета")
-    public void withdraw(@RequestBody BillWithdrawOperationInputDto withdrawDto) {
+    public BillOutputDto withdraw(@RequestBody BillWithdrawOperationInputDto withdrawDto) {
         AppValidator.validatePin(withdrawDto.pinCode());
         AppValidator.validateMoney(withdrawDto.sum());
-        billCashOperationsUseCase.withdraw(withdrawDto.billNumber(), withdrawDto.sum(), withdrawDto.pinCode());
+        return billCashOperationsUseCase.withdraw(withdrawDto.billNumber(), withdrawDto.sum(), withdrawDto.pinCode());
     }
 
     @PostMapping("/transfer")

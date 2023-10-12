@@ -1,9 +1,11 @@
 package ru.aston.banktest.contract.bill.input;
 
+import ru.aston.banktest.dto.output.BillOutputDto;
+
 import java.math.BigDecimal;
 
 public interface BillCashOperationsUseCase {
-    void deposite(String billNumber, BigDecimal sum);
+    BillOutputDto deposite(String billNumber, BigDecimal sum);
 
-    void withdraw(String billNumber, BigDecimal sum, String pinCode);
+    BillOutputDto withdraw(String billNumber, BigDecimal sum, String pinCode);
 }

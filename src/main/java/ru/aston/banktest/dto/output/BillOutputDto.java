@@ -6,8 +6,8 @@ import ru.aston.banktest.core.entity.Bill;
 import java.math.BigDecimal;
 
 public record BillOutputDto(
-        @Schema(title = "имя пользователя", description = "имя пользователя",
-                example = "test") Long id,
+        @Schema(title = "Идентификатор пользователя", description = "Уникальный идентификатор пользователя",
+                example = "1") Long id,
         @Schema(title = "Номер счета", description = "Номер счета",
                 example = "123456789101112131")
         String billNumber,
