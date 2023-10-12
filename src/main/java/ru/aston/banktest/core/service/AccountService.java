@@ -1,5 +1,6 @@
 package ru.aston.banktest.core.service;
 
+import org.springframework.data.domain.Page;
 import ru.aston.banktest.contract.account.input.AccountCreateUseCase;
 import ru.aston.banktest.contract.account.input.AccountGetUseCase;
 import ru.aston.banktest.contract.account.output.AccountOutputManager;
@@ -31,5 +32,10 @@ public class AccountService implements AccountCreateUseCase, AccountGetUseCase {
     @Override
     public AccountOutputDto getAccountInfo(String username) {
         return AccountOutputDto.fromEntityToDto(accountOutputManager.getAccount(username));
+    }
+
+    @Override
+    public Page<AccountOutputDto> getAllAccountInfo(int page, int elementsCount) {
+        return accountOutputManager.getAllAccount(page, elementsCount).map(AccountOutputDto::fromEntityToDto);
     }
 }

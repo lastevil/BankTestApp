@@ -17,15 +17,16 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenApi(@Value("${application-description}") String appDescription,
                                  @Value("${application-version}") String appVersion) {
-        return new OpenAPI().info(new Info().title("Application API")
+        return new OpenAPI()
+                .info(new Info().title("Application API")
                         .version(appVersion)
                         .description(appDescription)
                         .license(new License().name("Apache 2.0")
                                 .url("http://springdoc.org"))
-                        .contact(new Contact().name("username")
-                                .email("test@gmail.com")))
+                        .contact(new Contact().name("developer")
+                                .email("a.titov@astondevs.ru")))
                 .servers(List.of(new Server().url("http://localhost:8080/app")
-                        .description("Dev service")));
+                        .description("Test service")));
     }
 
 }

@@ -23,7 +23,7 @@ public class Account {
     Long id;
     @Column(name = "username")
     String username;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     Set<Bill> billList;
     @CreationTimestamp

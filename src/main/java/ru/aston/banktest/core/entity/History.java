@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -26,11 +25,9 @@ public class History {
     Actions action;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_bill")
-    @Nullable
     Bill fromBill;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_bill")
-    @Nullable
     Bill toBill;
     @CreationTimestamp
     @Column(name = "created_at")
