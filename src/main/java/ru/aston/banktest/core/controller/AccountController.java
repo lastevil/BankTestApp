@@ -24,16 +24,16 @@ public class AccountController {
         this.accountGetUseCase = accountGetUseCase;
     }
 
-    @PutMapping("/create")
+    @PostMapping("/create")
     @Operation(summary = "Создание пользователя и счета", description = "Если пользователь существует создается новый счет при условии, что введеный пин-код не использовался")
     public void create(@RequestBody AccountInputDto accountInputDto) {
         AppValidator.validatePin(accountInputDto.pinCode());
         accountCreateUseCase.createAccount(accountInputDto.username(), accountInputDto.pinCode());
     }
 
-    @GetMapping("/info")
+    @GetMapping("/user")
     @Operation(summary = "Запрос информации о пользователе", description = "Получение информации о счетах пользователя")
-    public AccountOutputDto getAccountInfo(@RequestParam(name = "username") String username) {
+    public AccountOutputDto getAccountInfo(@RequestBody String username) {
         return accountGetUseCase.getAccountInfo(username);
     }
 

@@ -15,7 +15,6 @@ import ru.aston.banktest.dto.output.BillOutputDto;
 import ru.aston.banktest.dto.output.HistoryOutputDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @RestController
@@ -40,7 +39,7 @@ public class BillController {
         return billCashOperationsUseCase.deposite(depositeDto.billNumber(), depositeDto.sum());
     }
 
-    @PostMapping("withdraw")
+    @PostMapping("/withdraw")
     @Operation(summary = "Снятие средств с счета", description = "Снятие средств с счета")
     public BillOutputDto withdraw(@RequestBody BillWithdrawOperationInputDto withdrawDto) {
         AppValidator.validatePin(withdrawDto.pinCode());
